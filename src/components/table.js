@@ -30,22 +30,18 @@ class Table extends Component{
             }
         );
         return(
-            <div className="row">
-                <div className="col s12 m8">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Course</th>
-                            <th>Grade</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {studentRows}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Grade</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {studentRows}
+                </tbody>
+            </table>
         );
     }
 }
