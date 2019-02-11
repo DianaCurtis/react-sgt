@@ -1,34 +1,14 @@
-import React,{Component} from 'react';
+import React from 'react';
 import StudentRow from './student_row';
 
-import studentData from '../data/get_all_students';
 
+const Table = (props) =>{
 
-class Table extends Component{
-
-    state={
-        students:[]
-    }
-
-    componentDidMount() {
-        this.getStudentsData();
-    }
-
-    getStudentsData(){
-        // Call server to get students
-        this.setState({
-            students:studentData
-        });
-    }
-
-    render(){
-
-
-        const studentRows=this.state.students.map(
-            (student)=>{
-                return <StudentRow key={student.id} student={student}/>
+        const studentRows=props.studentList.map((student)=>{
+                return <StudentRow delete={props.deleteStudent} key={student.id} student={student}/>
             }
         );
+
         return(
             <table>
                 <thead>
@@ -36,6 +16,7 @@ class Table extends Component{
                     <th>Name</th>
                     <th>Course</th>
                     <th>Grade</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,6 +25,6 @@ class Table extends Component{
             </table>
         );
     }
-}
+
 
 export default Table;
