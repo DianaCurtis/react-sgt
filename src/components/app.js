@@ -11,7 +11,7 @@ import studentData from '../data/get_all_students';
 
 import {randomString} from '../helpers';
 
-
+import axios from 'axios';
 
 class App extends Component {
 
@@ -23,11 +23,15 @@ class App extends Component {
     }
 
     getStudentsData(){
-
         // Call server to get students
-        this.setState({
-            students:studentData
+        axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
+            console.log('Server Response',response.data.data);
+            this.setState({
+                students:response.data.data
+            });
         });
+
+
     }
 
     addStudent = (student) =>{
