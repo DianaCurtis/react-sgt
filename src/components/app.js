@@ -7,11 +7,10 @@ import React, {Component} from 'react';
 import AddStudent from './add_student';
 import Table from './table';
 
-import studentData from '../data/get_all_students';
 
-import {randomString} from '../helpers';
+import {formatPostData} from '../helpers';
 
-
+import axios from 'axios';
 
 class App extends Component {
 
@@ -22,35 +21,58 @@ class App extends Component {
         this.getStudentsData();
     }
 
-    getStudentsData(){
-
+    async getStudentsData(){
         // Call server to get students
-        this.setState({
-            students:studentData
-        });
-    }
 
-    addStudent = (student) =>{
-        student.id=randomString();
+        // more towards asyncawait
+        const resp = await  axios.get('/server/getstudentlist.php');
+
+
         this.setState({
-            /*making a copy of the array with the new student*/
-            students: [...this.state.students,student]
+            students: resp.data.data || []
         })
+
+        // as oppose to the above one
+        // if(resp.data.success){
+        //     this.setState({
+        //         students:resp.data.data
+        //     })
+        // }else{
+        //     this.setState({
+        //         students:[]
+        //     })
+        // }
+
+
+        // traditional way
+        // axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
+        //     console.log('Server Response',response.data.data);
+        //     this.setState({
+        //         students:response.data.data
+        //     });
+        // });
     }
 
-    deleteStudent =(id) =>{
-        const indexToDelete = this.state.students.findIndex((student) =>{
-            return student.id === id;
-        });
+    addStudent =  async (student) =>{
 
-        if (indexToDelete >=0){
-            const tempStudents = this.state.students.slice();
-            tempStudents.splice(indexToDelete,1);
+        const formattedStudent = formatPostData(student);
 
-            this.setState({
-                students: tempStudents
-            });
-        }
+        /* removed the hard coded http:/localhost bc we need to keep in mind that this will be deployed on a server made changes on the package.json file with the proxy*/
+        await axios.post('/server/createstudent.php',formattedStudent);
+        /*the server knows who the students are, so we grab it from the server*/
+        this.getStudentsData();
+
+    };
+
+    deleteStudent = async (id) =>{
+       /*we are going to have the server to delete*/
+
+        const formattedId=formatPostData({id:id});
+
+        await axios.post('/server/deletestudent.php',formattedId);
+        this.getStudentsData(); //update the student
+
+
     }
 
     render(){
