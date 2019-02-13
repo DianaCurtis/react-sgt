@@ -7,9 +7,8 @@ import React, {Component} from 'react';
 import AddStudent from './add_student';
 import Table from './table';
 
-import studentData from '../data/get_all_students';
 
-import {randomString} from '../helpers';
+import {formatPostData} from '../helpers';
 
 import axios from 'axios';
 
@@ -27,9 +26,18 @@ class App extends Component {
 
         // more towards asyncawait
         const resp = await  axios.get('http://localhost/server/getstudentlist.php');
-        this.setState({
-            students:resp.data.data
-        })
+
+        console.log('get the list resp:',resp);
+        if(resp.data.success){
+            this.setState({
+                students:resp.data.data
+            })
+        }
+
+
+
+
+
 
         // traditional way
         // axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
@@ -42,13 +50,17 @@ class App extends Component {
 
     }
 
-    addStudent = (student) =>{
-        student.id=randomString();
-        this.setState({
-            /*making a copy of the array with the new student*/
-            students: [...this.state.students,student]
-        })
-    }
+    addStudent =  async (student) =>{
+
+        const formattedStudent = formatPostData(student);
+        console.log('Add student:',formattedStudent);
+
+
+        const resp = await axios.post('http://localhost/server/createstudent.php',formattedStudent);
+        console.log('Add student resp',resp);
+
+
+    };
 
     deleteStudent =(id) =>{
         const indexToDelete = this.state.students.findIndex((student) =>{

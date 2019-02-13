@@ -15,3 +15,18 @@ export function randomString(length = 8){
 
     return output;
 }
+
+
+export function formatPostData(data){
+    const urlParams = new URLSearchParams();
+
+            /* destructuring the array in []*/
+                                /*object.entries creates an aray of arrays, takes the key/value puts it into an array then puts that into one array will all arrays*/
+    for(let [key,value] of Object.entries(data)){
+
+        urlParams.append(key,value);
+    }
+
+    return urlParams;
+
+}
