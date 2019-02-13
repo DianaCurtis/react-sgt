@@ -22,14 +22,22 @@ class App extends Component {
         this.getStudentsData();
     }
 
-    getStudentsData(){
+    async getStudentsData(){
         // Call server to get students
-        axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
-            console.log('Server Response',response.data.data);
-            this.setState({
-                students:response.data.data
-            });
-        });
+
+        // more towards asyncawait
+        const resp = await  axios.get('http://localhost/server/getstudentlist.php');
+        this.setState({
+            students:resp.data.data
+        })
+
+        // traditional way
+        // axios.get('http://localhost/server/getstudentlist.php').then((response)=>{
+        //     console.log('Server Response',response.data.data);
+        //     this.setState({
+        //         students:response.data.data
+        //     });
+        // });
 
 
     }
