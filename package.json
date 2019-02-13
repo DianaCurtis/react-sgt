@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Student Grade Table built with ReactJS",
   "main": "index.js",
+  "proxy": {
+    "/server/*": {
+      "target": "http://localhost"
+    }
+  },
   "scripts": {
     "start": "node dev_server.js",
     "bundle": "webpack --config webpack.prod.js --progress",
