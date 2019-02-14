@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom';
 class Table extends Component {
 
     state={
-        students:[]
+        students:null
     }
     componentDidMount() {
         this.getStudentsData();
@@ -70,7 +70,14 @@ class Table extends Component {
                     return <StudentRow delete={this.deleteStudent} key={student.id} student={student}/>
                 }
             );
-        } else {// if have no data
+        } else if(students === null)
+        {    studentRows.push(
+            <tr key="no-data">
+                <td colSpan="4">
+                    <h4 className="center grey-text">Student Data Loading ...</h4>
+                </td>
+            </tr>
+        )} else {// if have no data
             studentRows.push(
                 <tr key="no-data">
                     <td colSpan="4">
